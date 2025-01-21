@@ -49,12 +49,14 @@ MySolution
 
 ### 1. Clone the Repository
 
-```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+bash
+
+git clone https://github.com/JulioBecker/HahnTest.git
 
 ### 2. Adjust the Connection String
 
 Update the DefaultConnection string in both MySolution.WebAPI/appsettings.json and MySolution.WorkerService/appsettings.json to point to your MSSQL instance, for example:
+
 {
   "ConnectionStrings": {
     "DefaultConnection": "Server=YOUR_SERVER;Database=MySolutionDb;User Id=YOUR_USER;Password=YOUR_PASSWORD;TrustServerCertificate=True;"
@@ -64,7 +66,9 @@ Update the DefaultConnection string in both MySolution.WebAPI/appsettings.json a
 ### 3. Run Database Migrations
 
 From the project root or from the WebAPI folder, run:
+
 dotnet ef migrations add InitialCreate --project ./src/MySolution.Infrastructure/MySolution.Infrastructure.csproj --startup-project ./src/MySolution.WebAPI/MySolution.WebAPI.csproj -o Data/Migrations
+
 dotnet ef database update --project ./src/MySolution.Infrastructure/MySolution.Infrastructure.csproj --startup-project ./src/MySolution.WebAPI/MySolution.WebAPI.csproj
 
 This creates and applies the initial migration, generating the necessary tables (e.g., Products, Hangfire schemas, etc.).
@@ -79,7 +83,10 @@ By default, it might run on https://localhost:5001 or http://localhost:5000 (dep
 ### 5. Run the WorkerService
 
 Open another terminal:
+
 cd src/MySolution.WorkerService
+
+
 dotnet run
 
 This service schedules the Hangfire job that fetches data from the Fake Store API every hour. The job will upsert those products into the MSSQL database.
@@ -87,21 +94,26 @@ This service schedules the Hangfire job that fetches data from the Fake Store AP
 ### 6. Run the Frontend (Vue.js + TypeScript)
 
 cd frontend/mysolution-frontend
+
 npm install
+
 npm run dev
 
 The application will start, typically on http://localhost:5173 (or another port shown in the console). Access it in your browser to see the products grid.
 
-Additional Details
-Clean Architecture:
+## Additional Details
+### Clean Architecture:
 Domain (core entities and logic)
 Application (use cases and DTOs)
-Infrastructure (EF Core, repositories, database context)
+Infrastructure (EF Core, repositories, DbContext)
 BackgroundJobs (Hangfire jobs)
-DDD:
+### DDD:
 Each entity encapsulates domain rules and logic.
-SOLID principles applied where applicable.
-Hangfire is used for job scheduling (hourly upsert).
-The Fake Store API is consumed in the WorkerService job.
-License
+### SOLID Principles:
+Applied where applicable.
+### Hangfire:
+Used for job scheduling (hourly upsert).
+### Fake Store API:
+Data consumed in the WorkerService job.
+## License
 Feel free to use this project as a reference or starting point for your own solutions.
